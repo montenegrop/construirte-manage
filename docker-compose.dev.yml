@@ -29,17 +29,17 @@ services:
   #     - STOREFRONT_URL=http://localhost:3000/
   #     - DASHBOARD_URL=http://localhost:9000/
 
-  storefront:
-    build:
-      context: ./saleor-storefront
-      dockerfile: ./Dockerfile.dev
-    ports:
-      - 3000:3000
-    restart: unless-stopped
-    volumes:
-      - ./saleor-storefront/:/app:cached
-      - /app/node_modules/
-    command: npm start -- --host 0.0.0.0
+  # storefront:
+  #   build:
+  #     context: ./saleor-storefront
+  #     dockerfile: ./Dockerfile.dev
+  #   ports:
+  #     - 3000:3000
+  #   restart: unless-stopped
+  #   volumes:
+  #     - ./saleor-storefront/:/app:cached
+  #     - /app/node_modules/
+  #   command: npm start -- --host 0.0.0.0
 
   # dashboard:
   #   build:
@@ -76,27 +76,27 @@ services:
     volumes:
       - saleor-redis:/data
 
-  # worker:
-  #   build:
-  #     context: ./construirte-api
-  #     dockerfile: ./Dockerfile
-  #     args:
-  #       STATIC_URL: '/static/'
-  #   command: celery -A saleor --app=saleor.celeryconf:app worker --loglevel=info
-  #   restart: unless-stopped
-  #   networks:
-  #     - saleor-backend-tier
-  #   env_file: common.env
-  #   depends_on:
-  #     - redis
-  #     - mailhog
-  #   volumes:
-  #     - ./construirte-api/saleor/:/app/saleor:Z,cached
-  #     - ./construirte-api/templates/:/app/templates:Z,cached
-  #     # shared volume between worker and api for media
-  #     - saleor-media:/app/media
-  #   environment:
-  #     - EMAIL_URL=smtp://mailhog:1025
+  worker:
+    build:
+      context: ./construirte-api
+      dockerfile: ./Dockerfile
+      args:
+        STATIC_URL: '/static/'
+    command: celery -A saleor --app=saleor.celeryconf:app worker --loglevel=info
+    restart: unless-stopped
+    networks:
+      - saleor-backend-tier
+    env_file: common.env
+    depends_on:
+      - redis
+      - mailhog
+    volumes:
+      - ./construirte-api/saleor/:/app/saleor:Z,cached
+      - ./construirte-api/templates/:/app/templates:Z,cached
+      # shared volume between worker and api for media
+      - saleor-media:/app/media
+    environment:
+      - EMAIL_URL=smtp://mailhog:1025
 
   jaeger:
     image: jaegertracing/all-in-one
@@ -131,3 +131,4 @@ volumes:
 networks:
   saleor-backend-tier:
     driver: bridge
+    
