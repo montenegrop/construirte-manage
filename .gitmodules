@@ -1,9 +1,9 @@
 [submodule "construirte-api"]
 	path = construirte-api
-	url = https://github.com/MBDIGITAL-INSUMOS/construirte-api.git
+	url = https://github.com/montenegrop/construirte-api.git
 [submodule "construirte-dashboard"]
 	path = construirte-dashboard
-	url = https://github.com/MBDIGITAL-INSUMOS/construirte-dashboard.git
+	url = https://github.com/montenegrop/construirte-dashboard.git
 [submodule "construirte-storefront"]
 	path = construirte-storefront
-	url = https://github.com/MBDIGITAL-INSUMOS/construirte-storefront.git
+	url = https://github.com/montenegrop/construirte-storefront.git
